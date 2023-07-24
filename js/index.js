@@ -13,6 +13,36 @@ window.onload = function () {
     }
   });
 
+  // data.json을 로딩
+  const xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function (event) {
+    const req = event.target;
+    if (req.readystate === XMLHttpRequest.DONE) {
+      const str = req.response;
+      // 글자로 on date를 객체로 변환
+      // 글자가 json 규칙대로 만들어진 문자열
+      // 그러므로 json글자를 객체로 변환해서 활용한다.
+      let obj = JSON.parse(str);
+
+      VISUAL_ARR = obj.visual;
+      showVisual();
+    }
+  };
+  // 자료를 호출한다
+  console.log("자료를 가져온다. XMLHT.....");
+  xhttp.open("GET", "data.json");
+  // 웹브라우저 기능을 실행 할수 있도록 요청
+  xhttp.send();
+
+  let VISUAL_ARR;
+  let visualTag = document.getElementById("data-visual");
+  // 비주얼 화면 출력 기능
+  function showVisual() {
+    let html = "";
+    VISUAL_ARR.forEach(function(item){
+      
+    })
+  }
   //펼침 목록들 보기 기능
   // 더보기 목록기능
   const menuBt = document.getElementById("menu-bt");
@@ -87,7 +117,7 @@ window.onload = function () {
   // toggleListArr[1] = joinList
   listToggle(centerBt, centerList);
   // toggleListArr[2] = centerList
-  
+
   //전체 메뉴 펼침 기능
   const allMenuArea = document.querySelector(".all-menu-area");
   const allMenu = document.querySelector(".all-menu");

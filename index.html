@@ -82,6 +82,13 @@
     <link rel="stylesheet" href="css/style.css" />
     <!-- css초기화 -->
     <link rel="stylesheet" href="css/normalize.css" />
+    <!-- Link Swiper's css -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+    <!-- Link Swiper's js -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <!-- javaScript 적용 -->
     <script src="js/index.js"></script>
   </head>
@@ -519,7 +526,25 @@
         </div>
       </header>
       <!-- 비주얼 -->
-      
+      <section class="visual">
+        <div class="visual-slide">
+          <!-- 비주얼 슬라이드 -->
+          <div class="swiper sw-visual">
+            <div class="swiper-wrapper" id="data-visual">
+              <!-- 데이터 출력 -->
+            </div>
+          </div>
+          <!-- 좌우 슬라이드 이동 버튼 -->
+          <button class="visual-prev">이전</button>
+          <button class="visual-next">다음</button>
+        </div>
+        <!-- 슬라이드 컨트롤러 -->
+        <div class="visual-control clearfix">
+          <button class="visual-play"></button>
+          <div class="visual-pg">1/17</div>
+          <button class="visual-more"></button>
+        </div>
+      </section>
       <!-- 오늘의상품 -->
       <!-- 알뜰상품 -->
       <!-- 신상품 -->
