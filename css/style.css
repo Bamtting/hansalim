@@ -158,7 +158,7 @@ body {
   transform: translateY(-50%);
   background-position: 0px 0px;
 }
-.center-more:hover:after {
+.center-more.active:after {
   background-position: 0px -6px;
 }
 .center-list {
@@ -275,7 +275,7 @@ body {
   height: calc(100vh - 105px - 128px);
   visibility: visible;
 }
-.all-menu:hover {
+.all-menu.active {
   width: 420px;
 }
 .all-menu-cate {
