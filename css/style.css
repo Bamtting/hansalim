@@ -1163,7 +1163,7 @@ body {
   width: 285px;
   height: 285px;
   background-color: #fff;
-  padding: 35px 30px;
+  padding: 35px 25px;
 }
 .brand-box a {
   position: relative;
@@ -1207,4 +1207,45 @@ body {
   display: block;
   font-size: 18px;
   font-weight: 500;
+}
+/* banner */
+.banner {
+  position: relative;
+  display: block;
+  padding-bottom: 0;
+}
+.banner-slide {
+  position: relative;
+  display: block;
+}
+.banner-slide a {
+  position: relative;
+  display: block;
+}
+.banner-slide-prev,
+.banner-slide-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: block;
+  width: 19px;
+  height: 34px;
+  cursor: pointer;
+  border: 0;
+  z-index: 99;
+}
+.banner-slide-prev {
+  left: 20px;
+  background: url("../images/banner_arrow.png");
+}
+.banner-slide-prev:hover {
+  background-position: 0px -34px;
+}
+.banner-slide-next {
+  right: 20px;
+  background: url("../images/banner_arrow.png");
+  transform: translateX(-50%) rotateY(180deg);
+}
+.banner-slide-next:hover {
+  background-position: 0px -34px;
 }
