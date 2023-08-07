@@ -16,6 +16,28 @@ window.onload = function () {
   function priceToString(price) {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
+  // 하단 패밀리 펼침 기능
+  // 목록 열기 버튼
+  const openBt = document.querySelector(".footer-link");
+  // 목록 닫기 버튼
+  const closeBt = document.querySelector(".family-close");
+  // 보여질 패밀리 목록
+  const family = document.querySelector(".family");
+  // 기능처리
+  openBt.addEventListener("click", function () {
+    family.classList.add("active");
+    this.classList.add("acitve");
+  });
+  closeBt.addEventListener("click", function () {
+    family.classList.remove("active");
+    openBt.classList.remove("active");
+  });
+  // 탑 스크롤 버튼
+  const scrollBtn = document.querySelector(".fix-top");
+  scrollBtn.addEventListener("click", function () {
+    window.scroll({ top: 0, behavior: "smooth" });
+  });
+  // =================================================================================
   // data.json을 로딩
   const xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function (event) {
@@ -845,7 +867,7 @@ window.onload = function () {
   const allMenu = document.querySelector(".all-menu");
   const cateList = document.querySelector(".cate-list");
   const themeList = document.querySelector(".theme-list");
-  cateList.addEventListener("mouseleave", function () {
+  allMenuArea.addEventListener("mouseleave", function () {
     allMenu.classList.remove("active");
   });
   cateList.addEventListener("mouseenter", function () {
@@ -868,6 +890,7 @@ window.onload = function () {
           itemSub.style.display = "block";
         }
       });
+      console.log(index);
     });
   });
 };
