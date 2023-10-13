@@ -16,28 +16,31 @@ window.onload = function () {
   function priceToString(price) {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
-  // 하단 패밀리 펼침 기능
-  // 목록 열기 버튼
+  //하단 패밀리 펼침 기능
+  //목록 열기 버튼
   const openBt = document.querySelector(".footer-link");
-  // 목록 닫기 버튼
+  //목록 닫기 버튼
   const closeBt = document.querySelector(".family-close");
-  // 보여질 패밀리 목록
+  //보여질 패밀리 목록
   const family = document.querySelector(".family");
-  // 기능처리
+  //기능처리
   openBt.addEventListener("click", function () {
     family.classList.add("active");
-    this.classList.add("acitve");
+    this.classList.add("active");
   });
   closeBt.addEventListener("click", function () {
     family.classList.remove("active");
     openBt.classList.remove("active");
   });
-  // 탑 스크롤 버튼
-  const scrollBtn = document.querySelector(".fix-top");
-  scrollBtn.addEventListener("click", function () {
-    window.scroll({ top: 0, behavior: "smooth" });
+
+  //top scroll
+  const fixTop = document.querySelector(".fix-top");
+  fixTop.addEventListener("click", function () {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   });
-  // =================================================================================
   // data.json을 로딩
   const xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function (event) {
@@ -45,11 +48,10 @@ window.onload = function () {
     if (req.readyState === XMLHttpRequest.DONE) {
       const str = req.response;
       // 글자로 온 데이터를 객체로 변환
-      // 글자가 json 규칙대로 만들어진 문자열.
-      // -> json 글자를 객체로 변환해서 활용함.
+      // 글자가 json 규칙대로 만들어진 문자열
+      // 그러므로 json 글자를 객체로 변환해서 활용
       let obj = JSON.parse(str);
 
-      //
       VISUAL_ARR = obj.visual;
       TODAY_GOOD = obj.todaygood;
       SALE_GOOD = obj.salegood;
@@ -64,95 +66,96 @@ window.onload = function () {
       NOTICE_ARR = obj.notice;
       GOODNEWS_ARR = obj.goodnews;
 
-      // 비주얼 화면에 배치한다.
+      // 비주얼 화면에 배치
       showVisual();
-      // 오늘의 상품을 화면에 배치
+      //오늘의 상품을 화면에 배치
       showTodayGood();
-      // 할인 상품을 화면에 배치
+      //할인 상품을 화면에 배치
       showSaleGood();
       // 신상품을 화면에 배치
       showNewGood();
       // 추천상품을 화면에 배치
       showRecommendGood();
-      // 인기상품 아이콘을 화면에 배치
+      // 인기물품 아이콘 화면에 배치
       showPopularIconGood();
       // 인기물품 화면에 배치
       showPopularGood();
-      // 브랜드 목록을 화면에 배치
+      // 브랜드 목록 화면에 배치
       showBrandArr();
-      // 배너 목록을 화면에 배치
+      //배너 화면에 배치
       showBannerArr();
-      // 시즌 목록을 화면에 배치
-      showSeason();
-      // 리뷰 목록을 화면에 배치
-      showReview();
-      // 공지 사항을 화면에 배치
-      showNotice();
-      // 물품 소식을 화면에 배치
-      showGoodnews();
+      //시즌 목록을 화면에 배치
+      showSeasonArr();
+      //리뷰 목록을 화면에 배치
+      showReviewArr();
+      //공지사항 화면에 배치
+      showNoticeArr();
+      //물품소식 화면에 배치
+      showGoodNewsArr();
     }
   };
-  //자료 호출
-  console.log("자료를 가져온다. XMLHT.....");
+  // 자료를 호출
+  // console.log("자료를 가져온다. XMLHT.....");
   xhttp.open("GET", "data.json");
-  //웹브라우저 기능을 실행 할수 있도록 요청
+  // 웹 브라우저 기능을 실행할 수 있도록 요청
   xhttp.send();
-  // ------------------------------
+  // ================================================
+  // 비주얼
   let VISUAL_ARR;
   let visualTag = document.getElementById("data-visual");
-  // 오늘상품
+  // 오늘 상품
   let TODAY_GOOD;
   let todayTag = document.getElementById("data-today");
   let todayTag2 = document.getElementById("data-today2");
-  // 할인상품
+  // 할인 상품
   let SALE_GOOD;
   let saleTag = document.getElementById("data-sale");
   // 신상품
   let NEW_GOOD;
   let newTag = document.getElementById("data-new");
   let newListTag = document.getElementById("data-new-list");
-  // 추천물품
+  // 추천 상품
   let RECOMMEND_GOOD;
   let recommendTag = document.getElementById("data-recommend");
-  // 인기 물품 아이콘
+  // 인기 상품 아이콘
   let POPULAR_ICON;
   let popularIconTag = document.getElementById("data-popular-icon");
-  // 인기 물품 화면출력
+  // 인기 상품
   let POPULAR_GOOD;
-  let popularShow = 1; // popular_good 목록중에 0번을 보여준다
+  let popularShow = 1; //목록 중 0번을 보여줌
   let popularTag = document.getElementById("data-popular");
   // 브랜드 목록 화면 출력
   let BRAND_ARR;
   let brandTag = document.getElementById("data-brand");
-  // 배너 화면출력
+  // 배너 화면 출력
   let BANNER_ARR;
   let bannerTag = document.getElementById("data-banner");
-  // 시즌 화면 출력
+  //시즌 목록 화면 출력
   let SEASON_ARR;
   let seasonTag = document.getElementById("data-season");
-  // 리뷰 화면 출력
+  //리뷰 화면 출력
   let REVIEW_ARR;
   let reviewTag = document.getElementById("data-review");
-  // 공지 사항 출력
+  //공지 화면 출력
   let NOTICE_ARR;
   let noticeTag = document.getElementById("data-notice");
-  // 물품 소식 출력
+  //공지 화면 출력
   let GOODNEWS_ARR;
   let goodnewsTag = document.getElementById("data-goodnews");
-  // -----------------------------
+  // ================================================
   // 비주얼 화면 출력 기능
   function showVisual() {
     let html = "";
     VISUAL_ARR.forEach(function (item) {
       const tag = `
-      <div class="swiper-slide">
-        <div class="visual-slide-page">
-          <a href = "${item.link}">
-          <img src="../images/${item.pic}"  alt="${item.name}"/>
-          </a>
-        </div>
+    <div class="swiper-slide">
+      <div class="visual-slide-page">
+        <a href = "${item.link}">
+        <img src="../images/${item.pic}"  alt="${item.name}"/>
+        </a>
       </div>
-      `;
+    </div>
+    `;
       html += tag;
     });
     visualTag.innerHTML = html;
@@ -172,11 +175,10 @@ window.onload = function () {
         type: "fraction",
       },
     });
-    // 비주얼 슬라이드 멈춤 기능
+    //  비주얼 슬라이드 멈춤 기능
     const swVisualPlay = document.querySelector(".visual-play");
     swVisualPlay.addEventListener("click", function () {
-      // 현재 active클래스 있는지 확인 후
-      // 기능을 설정함.
+      // 현재 active 클래스 있는지 확인하고 기능 설정
       if (swVisualPlay.classList.contains("active")) {
         swVisual.autoplay.start();
         swVisualPlay.classList.remove("active");
@@ -186,13 +188,12 @@ window.onload = function () {
       }
     });
   }
-  // ------------------------------
+
   // 오늘의 상품 화면 출력 기능
   function showTodayGood() {
     let htmlTop = "";
     let htmlBottom = "";
     const topArr = TODAY_GOOD.filter(function (item, index) {
-      // index 0-3
       if (index < 4) {
         return item;
       }
@@ -203,24 +204,23 @@ window.onload = function () {
               <!-- 제품이미지 -->
               <a href="${item.link}" class="good-img">
                 <img src="../images/${item.pic}" alt="${item.name}" />
-                <span class="good-type">${item.tag}</span>
+                <span class="good-type">인기</span>
               </a>
-              <!-- 제품정보 -->
+              <!-- 제품 정보 -->
               <a href="${item.link}" class="good-info">
                 <em>${item.name}</em>(<em>${item.unit}</em>)
               </a>
-              <!-- 제품가격 -->
-              <a href="${item.link}" class="good-info-price"> 
-              ${priceToString(item.price)} 
-                <em>원</em> 
+              <!-- 제품 가격 -->
+              <a href="${item.link}" class="good-info-price">
+              ${priceToString(item.price)} <em>원</em>
               </a>
-              <!-- 장바구니 아이콘 -->
+              <!-- 장바구니 이미지 -->
               <button class="good-add-cart"></button>
             </div>
       `;
       htmlTop += tag;
     });
-    // 배열의 일부분 index 4-7까지 배열만들기
+    // 배열의 밑부분 index 4~7까지 배열 만들기
     const botArr = TODAY_GOOD.filter(function (item, index) {
       if (index > 3) {
         return item;
@@ -232,18 +232,17 @@ window.onload = function () {
               <!-- 제품이미지 -->
               <a href="${item.link}" class="good-img">
                 <img src="../images/${item.pic}" alt="${item.name}" />
-                <span class="good-type">${item.tag}</span>
+                <span class="good-type">인기</span>
               </a>
-              <!-- 제품정보 -->
+              <!-- 제품 정보 -->
               <a href="${item.link}" class="good-info">
                 <em>${item.name}</em>(<em>${item.unit}</em>)
               </a>
-              <!-- 제품가격 -->
-              <a href="${item.link}" class="good-info-price"> 
-              ${priceToString(item.price)} 
-                <em>원</em> 
+              <!-- 제품 가격 -->
+              <a href="${item.link}" class="good-info-price">
+              ${priceToString(item.price)} <em>원</em>
               </a>
-              <!-- 장바구니 아이콘 -->
+              <!-- 장바구니 이미지 -->
               <button class="good-add-cart"></button>
             </div>
       `;
@@ -252,42 +251,42 @@ window.onload = function () {
     todayTag.innerHTML = htmlTop;
     todayTag2.innerHTML = htmlBottom;
   }
+
   // 할인 상품 화면 출력 기능
   function showSaleGood() {
     let html = `
     <div class = "swiper sw-sale">
-    <div class = "swiper-wrapper">  
-    
+    <div class = "swiper-wrapper">
     `;
     SALE_GOOD.forEach(function (item) {
       let tag = `
       <div class = "swiper-slide">
-        <div class="good-box">
+      <div class="good-box">
               <!-- 제품이미지 -->
               <a href="${item.link}" class="good-img">
                 <img src="../images/${item.pic}" alt="${item.name}" />
-                <span class="good-type">${item.tag}</span>
+                <span class="good-type">인기</span>
               </a>
-              <!-- 제품정보 -->
+              <!-- 제품 정보 -->
               <a href="${item.link}" class="good-info">
                 <em>${item.name}</em>(<em>${item.unit}</em>)
               </a>
-              <!-- 제품가격 -->
-              <a href="${item.link}" class="good-info-price"> 
-                ${priceToString(item.price)} 
-                <em>원</em> 
+              <!-- 제품 가격 -->
+              <a href="${item.link}" class="good-info-price">
+              ${priceToString(item.price)} <em>원</em>
               </a>
-              <!-- 장바구니 아이콘 -->
+              <!-- 장바구니 이미지 -->
               <button class="good-add-cart"></button>
-          </div>      
+            </div>
+
       </div>
       `;
       html += tag;
     });
     html += `
-    </div>
-    </div>
-    `;
+      </div>
+      </div>
+        `;
     saleTag.innerHTML = html;
     const swSale = new Swiper(".sw-sale", {
       slidesPerView: 3,
@@ -303,23 +302,24 @@ window.onload = function () {
       },
     });
   }
+
   // 신상품 화면 출력 기능
   function showNewGood() {
-    // 첫번째 화면 출력
+    // 첫 번째 화면 출력
     let obj = NEW_GOOD[0];
     let newGoodFirst = `
-    <a href="${obj.link}" class="new-img">
-      <img src="../images/${obj.pic}" alt="${obj.title}" />
+    <a href = "${obj.link}" class = "new-img">
+    <img src = "../images/${obj.pic}" alt = "${obj.title}" />
     </a>
-    <a href="${obj.link}" class="new-title">
-      ${obj.title}
+    <a href = "${obj.link}" class = "new-title">
+    ${obj.title}
     </a>
-    <a href="${obj.link}" class="new-txt">
-      ${obj.txt}
+    <a href = "${obj.link}" class = "new-txt">
+    ${obj.txt}
     </a>
     `;
     newTag.innerHTML = newGoodFirst;
-    // 나머지 출력 1-4번
+    // 나머지 1~4 출력
     let html = "";
     NEW_GOOD.forEach(function (item, index) {
       let tag = "";
@@ -327,12 +327,12 @@ window.onload = function () {
       if (index !== 0) {
         tag = `
         <div class="new-box">
-          <a href="${item.link}" class="new-box-img">
-            <img src="../images/${item.pic}" alt="${item.title}" />
-          </a>
-          <a href="${obj.link}" class="new-box-title">
-      ${obj.title}
-          </a>
+        <a href = "${item.link}" class = "new-box-img">
+    <img src = "../images/${item.pic}" alt = "${item.title}" />
+    </a>
+    <a href = "${item.link}" class = "new-box-title">
+    ${item.title}
+    </a>
         </div>
         `;
       }
@@ -340,47 +340,47 @@ window.onload = function () {
     });
     newListTag.innerHTML = html;
   }
-  // 추천상품 화면 출력 기능
+
+  // 추천 상품 화면 출력 기능
   function showRecommendGood() {
     let html = `
     <div class = "swiper sw-recommend">
-    <div class = "swiper-wrapper">  
-    
+    <div class = "swiper-wrapper">
     `;
     RECOMMEND_GOOD.forEach(function (item) {
       let tag = `
       <div class = "swiper-slide">
-        <div class="good-box">
+      <div class="good-box">
               <!-- 제품이미지 -->
               <a href="${item.link}" class="good-img">
                 <img src="../images/${item.pic}" alt="${item.name}" />
-                <span class="good-type">${item.tag}</span>
+                <span class="good-type">인기</span>
               </a>
-              <!-- 제품정보 -->
+              <!-- 제품 정보 -->
               <a href="${item.link}" class="good-info">
                 <em>${item.name}</em>(<em>${item.unit}</em>)
               </a>
-              <!-- 제품가격 -->
-              <a href="${item.link}" class="good-info-price"> 
-                ${priceToString(item.price)} 
-                <em>원</em> 
+              <!-- 제품 가격 -->
+              <a href="${item.link}" class="good-info-price">
+              ${priceToString(item.price)} <em>원</em>
               </a>
-              <!-- 장바구니 아이콘 -->
+              <!-- 장바구니 이미지 -->
               <button class="good-add-cart"></button>
-          </div>      
+            </div>
+
       </div>
       `;
       html += tag;
     });
     html += `
-    </div>
-    </div>
-    `;
+      </div>
+      </div>
+        `;
     recommendTag.innerHTML = html;
-    const swRecommend = new Swiper(".sw-recommend", {
+    const swSale = new Swiper(".sw-recommend", {
       slidesPerView: 3,
       spaceBetween: 16,
-      slidesPerGroup: 4,
+      slidesPerGroup: 3,
       navigation: {
         prevEl: ".recommend .slide-prev",
         nextEl: ".recommend .slide-next",
@@ -391,23 +391,24 @@ window.onload = function () {
       },
     });
   }
-  // 인기 상품 아이콘화면 출력
+
+  // 인기상품 아이콘 화면 출력 기능
   function showPopularIconGood() {
     let html = `
-    <div class="swiper sw-icon">
-    <div class="swiper-wrapper">
+    <div class= "swiper sw-icon">   
+    <div class = "swiper-wrapper">
     `;
-    // 데이터 처리
     POPULAR_ICON.forEach(function (item) {
       const tag = `
-      <div class= "swiper-slide">
-      <a herf="${item.link}">
-      <span class="popular-cate-icon"
-      style="
-      background:url('../images/${item.icon}') no-repeat;
-      background-position:0px 0px;">
+      <div class = "swiper-slide">
+      <a href = "${item.link}" >
+      <span class = "popular-cate-icon"
+        style =" 
+        background : url('../images/${item.icon}') no-repeat;
+        background-position : 0px 0px;
+        ">
       </span>
-      <span class="popular-cate-name">${item.txt}</span>
+      <span class ="popular-cate-name"> ${item.txt} </span>
       </a>
       </div>
       `;
@@ -427,38 +428,39 @@ window.onload = function () {
         prevEl: ".popular-slide-prev",
       },
     });
+    //.popular-cate-icon에 호버했을 때 이미지 변경 코드
     const tag = document.querySelectorAll(".popular-slide a");
     tag.forEach(function (item, index) {
-      // mouseover했을때 이미지가 변경된다
       item.addEventListener("mouseover", function () {
         const spanTag = this.querySelector(".popular-cate-icon");
         spanTag.style.backgroundPositionY = "-64px";
       });
-      // mouseout했을때 이미지가 다시돌아온다
       item.addEventListener("mouseout", function () {
         const spanTag = this.querySelector(".popular-cate-icon");
         spanTag.style.backgroundPositionY = "0px";
       });
-      // 클릭을 하면 버튼 (.popular-more)의 글자를 클릭된 타이틀의 글자로 변경한다.
+      //클릭을 하면 버튼(.popular-more)의
+      //  글자를 클릭된 타이틀의 글자로 변경
       item.addEventListener("click", function (event) {
-        // <a>태그의 href 가 적용 되기때문에 ui를 위해 막아준다
+        // a 태그이므로 href 기능이 적용됨.
+        // 웹 브라우저 갱신이 되므로 preventDefault를 사용하여 막아줌
         event.preventDefault();
         const bt = document.querySelector(".popular-more");
         const title = this.querySelector(".popular-cate-name");
         bt.innerHTML = `${title.innerHTML} 물품 더보기`;
-
-        //하단의 목록을 갱신한다
-        //현재 클릭된 번호를 popularShow 에 담는다.
+        //하단의 목록을 갱신
+        //현재 클릭된 번호를 popularShow에 담는다
         popularShow = index;
         showPopularGood();
       });
     });
   }
-  // 인기 상품 화면출력
+
+  // 인기 상품 화면 출력 기능
   function showPopularGood() {
     let html = "";
     let popCate = "populargood-" + (popularShow + 1);
-    console.log(POPULAR_GOOD[popCate]);
+    // console.log(POPULAR_GOOD[popCate]);
     POPULAR_GOOD[popCate].forEach(function (item) {
       let tag = `
       <div class="good-box">
@@ -483,35 +485,34 @@ window.onload = function () {
     });
     popularTag.innerHTML = html;
   }
+
+  // 브랜드 목록 화면 출력 기능
   function showBrandArr() {
     let html = `
-  <div class = "swiper sw-brand">
-  <div class = "swiper-wrapper">
-  `;
+    <div class = "swiper sw-brand">
+    <div class = "swiper-wrapper">
+    `;
     BRAND_ARR.forEach(function (item) {
       let tag = `
-    <div class = "swiper-slide">
-    <div class = "brand-box">
-    <a href = "${item.link}">
-    <img src = "../images/${item.pic}" alt = "${item.name}"/>
-    <p>${item.name}</p>
-    <ul class = "brand-info clearfix">
-    <li>
-      <span class="brand-info-title">${item.title1}</span>
-      <span class="brand-info-value">${item.value1}</span>
-    </li>
-    <li>
-      <span class="brand-info-title">${item.title2}</span>
-      <span class="brand-info-value">${item.value2}</span>
-    </li>
-
-
-    </ul>
-    </a>
-
-    </div>
-    </div>
-    `;
+      <div class = "swiper-slide">
+        <div class = "brand-box">
+          <a href = "${item.link}">
+            <img src = "../images/${item.pic}" alt ="${item.id}" />
+            <p>${item.name}</p>
+            <ul class = "brand-info clearfix">
+              <li>
+                <span class ="brand-info-title">${item.title1}</span>
+                <span class ="brand-info-value">${item.value1}</span>
+              </li>
+              <li>
+                <span class ="brand-info-title">${item.title2}</span>
+                <span class ="brand-info-value">${item.value2}</span>
+              </li>
+            </ul>
+          </a>
+        </div>
+      </div>
+      `;
       html += tag;
     });
     html += `
@@ -532,24 +533,24 @@ window.onload = function () {
       },
     });
   }
-  //  배너 화면출력기능
+
+  //배너 화면 출력 기능
   function showBannerArr() {
     let html = `
-    <div class = "swiper sw-banner">
-    <div class = "swiper-wrapper">
+    <div class= "swiper sw-banner">
+    <div class= "swiper-wrapper">
     `;
     BANNER_ARR.forEach(function (item) {
       let tag = `
-      <div class = "swiper-slide">
-      <a href="${item.link}">
-      <img src = "../images/${item.image}" alt ="${item.title}"/>
-
-      </a>
+      <div class= "swiper-slide">
+        <a href = "${item.link}">
+          <img src = "../images/${item.image}" alt = "${item.title}"/>
+        </a>
       </div>
       `;
       html += tag;
     });
-    html += ` 
+    html += `
     </div>
     </div>
     `;
@@ -563,85 +564,85 @@ window.onload = function () {
       slidesPerView: 2,
       spaceBetween: 0,
       navigation: {
-        prevEl: ".banner .banner-slide-prev",
-        nextEl: ".banner .banner-slide-next",
+        prevEl: ".banner-slide-prev",
+        nextEl: ".banner-slide-next",
       },
     });
   }
-  // 시즌 목록 화면 출력 기능
+
+  //시즌 목록 화면 출력 기능
   const buyTotal = document.getElementById("buy-total");
   const buyTotalMoney = document.getElementById("buy-total-money");
   let buyTotalCount = 0;
   let buyTotalMoneyPrice = 0;
-  function showSeason() {
+  function showSeasonArr() {
     let html = "";
     SEASON_ARR.forEach(function (item, index) {
       const tag = `
-      <li >
-       <div class="season-good clearfix">
-        <input 
-          type="checkbox"
-          id="ch${index}"
-          class="season-good-check season-item"
-          checked
-          value= ${item.price}
-          />
-        <label for="ch${index}" class="season-label"> ${item.title}</label>  
-        <a href="${item.link}" class="season-good-img">
-         <img src = "../images/${item.pic}" alt ="${item.title}"/>
-        </a>
-        <p class = "season-good-info">
-        <a href="${item.link}" class="season-good-title">${item.title}</a>
+      <li>
+        <div class = "season-good clearfix">
+          <input
+            type = "checkbox"
+            id = "ch${index}"
+            class = "season-good-check season-item"
+            checked
+            value = ${item.price}/>
+            <label for = "ch${index}" class= "season-label">${
+        item.title
+      }</label>
+            <a href = "${item.link}" class = "season-good-img">
+              <img src = "../images/${item.pic}" alt = "${item.title}"/>
+            </a>
+            <p class = "season-good-info">
+            <a href="${item.link}" class="season-good-title">${item.title}</a>
             <a href="${
               item.link
             }" class="season-good-price"><em>${priceToString(
         item.price
       )}</em>원</a>
-        </p>
-       </div>
+            </p>
+        </div>
       </li>
       `;
       html += tag;
     });
     seasonTag.innerHTML = html;
-    // 스크롤 바 적용
+    //scrollbar
     Scrollbar.initAll();
-    // 체크박스 각각의 기능
+    //체크박스 각각의 기능
     checkBoxFn();
-    // 계산 출력
+    //계산 출력
     showBuyGood();
   }
-  // 전체 체크박스 기능
+  //전체 체크박스
   const chkAll = document.getElementById("chall");
   chkAll.addEventListener("change", function () {
     const chkArr = document.querySelectorAll(".season-item");
     if (chkAll.checked) {
-      // 전체 체크를 해야 하는 경우
       chkArr.forEach(function (item) {
         item.checked = true;
       });
     } else {
-      // 전체 체크를 해제 해야 하는 경우
+      //전체 체크를 해제 해야 하는 경우
       chkArr.forEach(function (item) {
         item.checked = false;
       });
     }
-    // 계산 출력
     showBuyGood();
   });
-  // 체크박스 각각의 기능
+  //체크박스 각각의 기능
   function checkBoxFn() {
     const chkArr = document.querySelectorAll(".season-item");
     chkArr.forEach(function (item) {
       item.addEventListener("change", function () {
-        // 가격을 다시 계산
+        //가격을 다시 계산함
         showBuyGood();
       });
     });
   }
   //계산 출력 기능
   function showBuyGood() {
-    //체크가 된 카운팅을 한다 그리고 더한다.
+    //체크가 된 카운팅을 함. 그리고 더함.
     let count = 0;
     let priceTotal = 0;
     const chkArr = document.querySelectorAll(".season-item");
@@ -649,8 +650,7 @@ window.onload = function () {
       const state = item.checked;
       if (state) {
         count += 1;
-        //count++
-        //글자를 정수 숫자로 변경함
+        //글자를 정수 숫자를 변경
         const price = parseInt(item.value);
         priceTotal += price;
       }
@@ -661,40 +661,39 @@ window.onload = function () {
     buyTotalMoney.innerHTML = priceToString(buyTotalMoneyPrice);
     //전체 선택 버튼 해제
     if (buyTotalCount === chkArr.length) {
-      //전체 체크 버튼 checked되어야 함
       chkAll.checked = true;
     } else {
-      //전체 체크 버튼 checked가 해제 되어야 함
       chkAll.checked = false;
     }
   }
-  // 리뷰목록 화면출력기능
-  function showReview() {
+
+  //리뷰 목록 화면 출력 기능
+  function showReviewArr() {
     let html = `
     <div class="swiper sw-review">
     <div class="swiper-wrapper">
     `;
-    // 데이터 처리
+    //데이터 처리
     REVIEW_ARR.forEach(function (item) {
       const tag = `
       <div class="swiper-slide">
-        <div class="review-box">
-                  <a href="${item.link}">
-                    <div class="review-box-desc">
-                      <span class="review-box-title">
-                      ${item.title}
-                      </span>
-                      <span class="review-box-star"> ${item.star} </span>
-                      <span class="review-box-img">
-                        <img src="../images/${item.pic}" alt="${item.title}" />
-                      </span>
-                    </div>
-                    <p class="review-box-txt">
-                    ${item.txt}
-                    </p>
-                    <span class="review-box-user"> ${item.user}${item.shop} </span>
-                  </a>
-        </div>
+      <div class="review-box">
+        <a href="${item.link}">
+          <div class= "review-box-desc">
+            <span class= " review-box-title">
+            ${item.title}
+            </span>
+            <span class="review-box-star"> ${item.star} </span>
+            <span class="review-box-img">
+            <img src="../images/${item.pic}" alt="${item.title}" />
+            </span>
+          </div>
+            <p class="review-box-txt">
+              ${item.txt}
+            </p>
+          <span class="review-box-user"> ${item.user}${item.shop} </span>
+        </a>
+      </div>
       </div>
       `;
       html += tag;
@@ -718,126 +717,131 @@ window.onload = function () {
       },
     });
   }
-  // 공지사항
-  function showNotice() {
+
+  //공지사항 화면 출력 기능
+  function showNoticeArr() {
     let html = "";
-    // 데이터 갱신
+    //데이터 갱신
     NOTICE_ARR.forEach(function (item) {
       const tag = `
       <li>
-      <a href = "${item.link}">
-      <span>
-      ${item.title}
-      </span><em>${item.date}</em>
-      </a>
+        <a href = "${item.link}">
+          <span>
+          ${item.title}
+          </span><em>${item.date}</em>
+        </a>
       </li>
       `;
       html += tag;
     });
     noticeTag.innerHTML = html;
   }
-  // 물품 소식
-  function showGoodnews() {
+
+  //물품소식 화면 출력 기능
+  function showGoodNewsArr() {
     let html = "";
-    // 데이터 갱신
+    //데이터 갱신
     GOODNEWS_ARR.forEach(function (item) {
       const tag = `
-    <li>
-      <a href = "${item.link}">
-      <span>
-      ${item.title}
-      </span><em>${item.date}</em>
-      </a>
+      <li>
+        <a href = "${item.link}">
+          <span>
+          ${item.title}
+          </span><em>${item.date}</em>
+        </a>
       </li>
-    `;
+      `;
       html += tag;
     });
     goodnewsTag.innerHTML = html;
   }
-  //  커뮤니티 탭 메뉴
-  //  탭 버튼
-  const tabBtArr = document.querySelectorAll(".community-bt");
-  // 탭 내용
+
+  //커뮤니티 탭 메뉴
+  //탭 버튼
+  const tabBtArr = document.querySelectorAll(".community-btn");
+  //탭 내용
   const tabConArr = document.querySelectorAll(".community-notice dd");
-  // 탭 포커스
+  //탭 포커스
   let tabFocusIndex = 0;
-  // 탭 버튼 클릭 처리
+  //탭 버튼 클릭 처리
   tabBtArr.forEach(function (item, index) {
     item.addEventListener("click", function () {
       tabFocusIndex = index;
       tabFocusFn();
     });
   });
-  // 탭 포커스 함수를 생성
   function tabFocusFn() {
-    // 포커스 css 를 적용 및 제거
-    // 일단 모두 제거
+    // 포커스 css를 적용 및 제거
     tabBtArr.forEach(function (item) {
-      item.classList.remove("community-bt-active");
+      item.classList.remove("community-btn-active");
     });
-    // 인덱스에 해당하는 것만 적용
-    tabBtArr[tabFocusIndex].classList.add("community-bt-active");
-    // 내용에서 일단 모두 제거
+    //인덱스에 해당되는 것만 적용
+    tabBtArr[tabFocusIndex].classList.add("community-btn-active");
+    //내용에서 일단 모두 제거
     tabConArr.forEach(function (item) {
       item.classList.remove("community-visible-active");
     });
     tabConArr[tabFocusIndex].classList.add("community-visible-active");
   }
-  // -------------------------------
-  // 펼침 목록들 보기 기능
-  // 더보기 목록기능
+  // ================================================
+  //펼침 목록 보기 기능
+  //더보기 목록 기능
   const menuBt = document.getElementById("menu-bt");
   const menuList = document.getElementById("menu-list");
-  // 참여 목록기능
+  // 참여 목록 기능
   const joinBt = document.getElementById("join-bt");
   const joinList = document.getElementById("join-list");
-  //  조합원센터 목록기능
+  // 조합원 센터 목록 기능
   const centerBt = document.getElementById("center-bt");
   const centerList = document.getElementById("center-list");
-  //  배열 순서번호가 주어진다.
-  // 배열순서번호 index라고 한다
+  // 배열 순서 번호가 주어짐
+  // 배열 순서 번호 = index
   const toggleListArr = [menuList, joinList, centerList];
   const toggleBtArr = [menuBt, joinBt, centerBt];
-  // 펼침 목록 모두!!!!!! 닫기
+
+  // 펼친 목록 전부!!!!! 닫기
   document.addEventListener("click", function () {
     toggleListArr.forEach(function (item) {
       item.style.display = "none";
     });
-    // 버튼 초기화
+
+    //버튼 초기화
     toggleBtArr.forEach(function (item) {
       item.classList.remove("active");
     });
   });
-  //목록 전체를 클릭해도 이벤트 전달을 막는다.
+
+  // 목록 전체를 클릭해도 이벤트 전달을 막음
   toggleListArr.forEach(function (item) {
     item.addEventListener("click", function (event) {
       event.stopPropagation();
     });
   });
-  // 코드 블럭이 같은 기능이 반복된다
-  // 기능을 만들어서 써야겠다
+
+  // 코드 블록이 같은 기능이 반복됨
   function listToggle(버튼, 목록) {
-    // 처음에는 목록을 보여주지 않는다.
+    // 처음에는 목록 안 보여줌
     목록.style.display = "none";
-    // click이벤트가 발생하면 함수를 실행한다
+    // click 이벤트가 발생 시 함수 실행
     버튼.addEventListener("click", function (event) {
-      // 클릭이 되었다면 이벤트는 아래 전달된다.
-      // 클릭된 이벤트를 아래로 전달하지 못하도록 막아준다
+      // 클릭이 됐다면 이벤트는 아래로 전달
+      // 클릭된 이벤트를 아래로 전달하지 못하도록 막아줌
       event.stopPropagation();
       toggleBtArr.forEach(function (item) {
         item.classList.remove("active");
       });
-      console.log(목록);
+      // console.log(목록);
       const nowListId = 목록.getAttribute("id");
       const hideArr = toggleListArr.filter(function (item) {
         let id = item.getAttribute("id");
-        console.log(item);
+        // console.log(id);
         if (id !== nowListId) {
           return this;
         }
       });
+
       // 그리고 새로 저장된 배열의 목록들은
-      console.log(hideArr);
+      // console.log(hideArr);
       hideArr.forEach(function (item) {
         item.style.display = "none";
       });
@@ -855,6 +859,7 @@ window.onload = function () {
     });
     //
   }
+
   listToggle(menuBt, menuList);
   // toggleListArr[0] = menuList
   listToggle(joinBt, joinList);
@@ -862,11 +867,12 @@ window.onload = function () {
   listToggle(centerBt, centerList);
   // toggleListArr[2] = centerList
 
-  // 전체 메뉴 펼침 기능
+  //전체 메뉴 펼침 기능
   const allMenuArea = document.querySelector(".all-menu-area");
   const allMenu = document.querySelector(".all-menu");
   const cateList = document.querySelector(".cate-list");
   const themeList = document.querySelector(".theme-list");
+
   allMenuArea.addEventListener("mouseleave", function () {
     allMenu.classList.remove("active");
   });
@@ -876,10 +882,7 @@ window.onload = function () {
   themeList.addEventListener("mouseleave", function () {
     allMenu.classList.remove("active");
   });
-  themeList.addEventListener("mouseenter", function () {
-    allMenu.classList.remove("active");
-  });
-  // 서브 카테고리 보여주기
+  //서브 카테고리 보여주기
   const cateLists = document.querySelectorAll(".cate-list > li");
   const cateDepth2 = document.querySelectorAll(".cate-depth2-list");
   cateLists.forEach(function (item, index) {
@@ -890,7 +893,6 @@ window.onload = function () {
           itemSub.style.display = "block";
         }
       });
-      console.log(index);
     });
   });
 };
