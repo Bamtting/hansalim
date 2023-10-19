@@ -2030,3 +2030,55 @@ body {
 .kk {
   background-position: 0px calc(-26px * 4) !important;
 }
+.study_background {
+  z-index: 99999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+}
+.study {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+  width: 500px;
+  height: 400px;
+}
+
+.close {
+  display: block;
+  border: none;
+  background-color: #3056a1;
+  color: #fff;
+  margin: 50px auto;
+  padding: 10px 30px;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+}
+.font {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  padding: 10px;
+  margin: 50px 0 0 0;
+}
+
+.font > span {
+  text-align: center;
+  line-height: 20px;
+}
+.font > p {
+  line-height: 45px;
+}
+.font > p > a {
+  color: #db574f;
+}

@@ -1,4 +1,11 @@
 window.onload = function () {
+  var study_Modal = document.querySelector(".study");
+  var studyBackground = document.querySelector(".study_background");
+  var closeBtn = document.querySelector(".close");
+  closeBtn.addEventListener("click", function (e) {
+    study_Modal.style.display = "none";
+    studyBackground.style.display = "none";
+  });
   const wrap = document.querySelector(".wrap");
   const header = document.querySelector(".header");
   let scy = 0;
